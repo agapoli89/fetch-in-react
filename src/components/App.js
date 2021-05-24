@@ -5,23 +5,23 @@ import Word from './Word';
 class App extends Component {
 
   state = { 
-    words: [
-      {
-        "id": 1,
-        "en": "cat",
-        "pl": "kot"
-      },
-      {
-          "id": 2,
-          "en": "dog",
-          "pl": "pies"
-      },
-      {
-          "id": 3,
-          "en": "fish",
-          "pl": "ryba"
-      }
-    ]
+    words: [],
+    isLoaded: false
+  }
+
+  componentDidMount() {
+    setTimeout(this.fetchData, 3000)
+  }
+
+  fetchData = () => {
+    fetch('data/words.json')
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        words: data.words,
+        isLoaded: true
+      })
+    })
   }
 
   render() { 
@@ -30,7 +30,7 @@ class App extends Component {
     ))
     return ( 
       <ul className="App">
-        {words}
+        {this.state.isLoaded ? words : 'ładowanie danych'}
     </ul>
      );
   }
